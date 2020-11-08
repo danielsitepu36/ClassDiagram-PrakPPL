@@ -76,18 +76,30 @@ class Periksa:
         self.idPeriksa = idPeriksa
 
 class ReminderObat:
-     def __init__(self, idReminder, namaObat, jadwalMinumObat, muted):
-         self._idReminder = idReminder
-         self._namaObat = namaObat
-         self._jadwalMinumObat = jadwalMinumObat
-         self._muted = muted
+    def __init__(self, idReminder, namaObat, jadwalMinumObat, muted):
+        self._idReminder = idReminder
+        self._namaObat = namaObat
+        self._jadwalMinumObat = jadwalMinumObat
+        self._muted = muted
 
-     def setReminderObat(idReminder, namaObat, jadwalMinumObat):
-         jadwalMinumObat = dateNow()
-         muted = False
+    def setReminderObat(idReminder, namaObat, jadwalMinumObat):
+        jadwalMinumObat = dateNow()
+        muted = False
 
-     def getReminderObat(idReminder):
+    def getReminderObat(idReminder):
 
 
-     def muteReminderObat(idReminder, muted):
-         muted = True
+    def muteReminderObat(idReminder, muted):
+        muted = True
+
+class RekamMedis:
+    def __init__(self, idPeriksa, dataPenyakit, keterangan):
+        self._idPeriksa = idPeriksa
+        self._dataPenyakit = dataPenyakit
+        self._keterangan = keterangan
+
+    def setRekamMedis(idPeriksa, dataPenyakit, keterangan):
+
+
+    def getRekamMedis(idPeriksa):
+
