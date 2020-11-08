@@ -69,6 +69,7 @@ class Periksa:
         self._diterima = False
 
     def setPeriksa(idPeriksa, idPasien, idDokter, tanggalPeriksa)
+        tanggalPeriksa = dateNow()
 
     def terima(idPeriksa):
         self.diterima = True
