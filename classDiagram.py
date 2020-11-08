@@ -75,3 +75,19 @@ class Periksa:
         self.diterima = True
         self.idPeriksa = idPeriksa
 
+class ReminderObat:
+     def __init__(self, idReminder, namaObat, jadwalMinumObat, muted):
+         self._idReminder = idReminder
+         self._namaObat = namaObat
+         self._jadwalMinumObat = jadwalMinumObat
+         self._muted = muted
+
+     def setReminderObat(idReminder, namaObat, jadwalMinumObat):
+         jadwalMinumObat = dateNow()
+         muted = False
+
+     def getReminderObat(idReminder):
+
+
+     def muteReminderObat(idReminder, muted):
+         muted = True
