@@ -1,3 +1,5 @@
+from datetime import datetime
+
 nama_dokter = ["Sitepu", "Khrisna", "Wardana"]
 
 def logInWithGmail(email):
@@ -57,4 +59,18 @@ class Pasien(User):
         super().__init__()
         self.role = "pasien"
 
+# Class Periksa, class aktivitas utama dalam alur Go-Doc
+class Periksa:
+    def __init__(self, idPasien, idDokter, idRekamMedis, idReminderObat, namaPenyakit):
+        self._idPasien = idPasien
+        self._idDokter = idDokter
+        self._idRekamMedis = idRekamMedis
+        self._idReminderObat = idReminderObat
+        self._diterima = False
+
+    def setPeriksa(idPeriksa, idPasien, idDokter, tanggalPeriksa)
+
+    def terima(idPeriksa):
+        self.diterima = True
+        self.idPeriksa = idPeriksa
 
