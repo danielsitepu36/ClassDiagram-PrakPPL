@@ -68,7 +68,7 @@ class Periksa:
         self._idReminderObat = idReminderObat
         self._diterima = False
 
-    def setPeriksa(idPeriksa, idPasien, idDokter, tanggalPeriksa)
+    def setPeriksa(idPeriksa, idPasien, idDokter, tanggalPeriksa):
         tanggalPeriksa = dateNow()
 
     def terima(idPeriksa):
