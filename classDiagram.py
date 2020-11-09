@@ -1,105 +1,181 @@
 from datetime import datetime
 
-nama_dokter = ["Sitepu", "Khrisna", "Wardana"]
 
 def logInWithGmail(email):
+    token = ""
     if '@gmail' in email:
         return (True, token)
     return (False, None)
 
+
 def signUpWithGmail(email):
-    return (True, token)
+    id, token = ""
+    return (True, id, token)
+
 
 class User:
-    def __init__(self, gmail, name, age, gender, address, phone):
+    def __init__(self, idUser, gmail, nama, umur, gender, alamat, noTelp, role):
+        self.idUser = idUser
         self.gmail = gmail
-        self.name = name
-        self.age = age
+        self.nama = nama
+        self.umur = umur
         self.gender = gender
-        self.address = address
-        self.phone = phone
-        if name in nama_dokter:
-            self.role = "dokter"
-        elif name in list_admin:
-            self.role = "admin"
-        else:
-            self.role = "user"
+        self.alamat = alamat
+        self.noTelp = noTelp
+        self.role = role
         self.isLogin = False
-        self.id = None
+        self.token = ""
 
     def login(self, gmail):
-        login, ID = logInWithGmail(gmail)
+        login, token = logInWithGmail(gmail)
         if(login):
             self.isLogin = True
-            self.id = ID
-            return True
+            self.token = token
+            return token
         else:
             return False
 
-    def signup(self, gmail):
-        login, ID = signUpWithGmail(gmail)
+    def signup(self, gmail, nama, umur, gender, alamat, noTelp, role):
+        login, id, token = signUpWithGmail(gmail)
         if login:
             self.isLogin = True
-            self.id = ID
+            self.idUser = id
+            self.nama = nama
+            self.umur = umur
+            self.gender = gender
+            self.alamat = alamat
+            self.noTelp = noTelp
+            self.role = role
+            self.token = token
+            return token
+        else:
+            return False
 
     def logout(self):
         self.isLogin = False
-        self.id = None
+        self.token = None
         return True
 
-    def updateIdentity(self, name, age, gender, address, phone):
-        self.name = name
-        self.age = age
+    def updateIdentity(self, nama, umur, gender, alamat, noTelp):
+        self.nama = nama
+        self.umur = umur
         self.gender = gender
-        self.address = address
-        self.phone = phone
+        self.alamat = alamat
+        self.noTelp = noTelp
+
+    def getIdentity(self):
+        return self
+
+    def setRole(self, role):
+        self.role = role
+
 
 class Pasien(User):
     def __init__(self):
         super().__init__()
         self.role = "pasien"
 
+
+class Dokter(User):
+    def __init__(self, noSTR, spesialis, statusVerifikasi):
+        super().__init__()
+        self.role = "dokter"
+        self.noSTR = noSTR
+        self.spesialis = spesialis
+        self.statusVerifikasi = statusVerifikasi
+
+    def setSpesialis(self, spesialis):
+        self.spesialis = spesialis
+
+    def getSpesialis(self):
+        return self.spesialis
+
+    def verifikasi(self, statusVerifikasi):
+        self.statusVerifikasi = statusVerifikasi
+        return statusVerifikasi
+
+
+class Admin:
+    def __init__(self, idAdmin, gmail, nama):
+        self.idAdmin = idAdmin
+        self.gmail = gmail
+        self.nama = nama
+        self.isLogin = False
+        self.token = ""
+
 # Class Periksa, class aktivitas utama dalam alur Go-Doc
+
+
 class Periksa:
-    def __init__(self, idPasien, idDokter, idRekamMedis, idReminderObat, namaPenyakit):
-        self._idPasien = idPasien
-        self._idDokter = idDokter
-        self._idRekamMedis = idRekamMedis
-        self._idReminderObat = idReminderObat
-        self._diterima = False
+    def __init__(self, idPeriksa, idPasien, idDokter, waktuPeriksa):
+        self.idPeriksa = idPeriksa
+        self.idPasien = idPasien
+        self.idDokter = idDokter
+        self.waktuPeriksa = waktuPeriksa
+        self.diterima = bool
+        self.idRekamMedis = ""
+        self.idReminderObat = []
+        self.namaPenyakit = ""
 
-    def setPeriksa(idPeriksa, idPasien, idDokter, tanggalPeriksa):
-        tanggalPeriksa = dateNow()
+    def setPeriksa(self, idPeriksa, idPasien, idDokter, waktuPeriksa):
+        self.idPeriksa = idPeriksa
+        self.idPasien = idPasien
+        self.idDokter = idDokter
+        self.waktuPeriksa = waktuPeriksa
 
-    def terima(idPeriksa):
-        self.diterima = True
+    def terima(self, status):
+        self.diterima = status
+        return self.diterima
+
+    def telahDiperiksa(self, idRekamMedis, idReminderObat, namaPenyakit):
+        self.idRekamMedis = idRekamMedis
+        self.idReminderObat = idReminderObat
+        self.namaPenyakit = namaPenyakit
+        return True
+
+    def getPeriksa(self):
+        return self
+
+
+class Riwayat:
+    def __init__(self, idPasien, idPeriksa):
+        self.idPasien = idPasien
         self.idPeriksa = idPeriksa
 
-class ReminderObat:
-    def __init__(self, idReminder, namaObat, jadwalMinumObat, muted):
-        self._idReminder = idReminder
-        self._namaObat = namaObat
-        self._jadwalMinumObat = jadwalMinumObat
-        self._muted = muted
+    def setRiwayat(self, idPasien, idPeriksa):
+        self.idPasien = idPasien
+        self.idPeriksa = idPeriksa
 
-    def setReminderObat(idReminder, namaObat, jadwalMinumObat):
-        jadwalMinumObat = dateNow()
-        muted = False
+    def updatePeriksa(self, idPeriksa):
+        self.idPeriksa = idPeriksa
 
-    def getReminderObat(idReminder):
+    def getRiwayat(self):
+        return self
 
-
-    def muteReminderObat(idReminder, muted):
-        muted = True
 
 class RekamMedis:
     def __init__(self, idPeriksa, dataPenyakit, keterangan):
-        self._idPeriksa = idPeriksa
-        self._dataPenyakit = dataPenyakit
-        self._keterangan = keterangan
-
-    def setRekamMedis(idPeriksa, dataPenyakit, keterangan):
+        self.idPeriksa = idPeriksa
+        self.dataPenyakit = dataPenyakit
+        self.keterangan = keterangan
 
 
-    def getRekamMedis(idPeriksa):
+class ReminderObat:
+    def __init__(self, idReminder, namaObat, jadwalMinumObat, muted):
+        self.idReminder = idReminder
+        self.namaObat = namaObat
+        self.jadwalMinumObat = jadwalMinumObat
+        self.muted = muted
 
+    def setReminderObat(self, idReminder, namaObat, jadwalMinumObat):
+        self.idReminder = idReminder
+        self.namaObat = namaObat
+        self.jadwalMinumObat = jadwalMinumObat
+        self.muted = False
+
+    def getReminderObat(self):
+        return self
+
+    def muteReminderObat(self, muted):
+        self.muted = muted
+        return muted
