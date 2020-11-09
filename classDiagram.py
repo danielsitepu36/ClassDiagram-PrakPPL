@@ -1,30 +1,34 @@
 from datetime import datetime
+import random
+import string
 
 
 def logInWithGmail(email):
-    token = ""
+    token = ''.join(random.choice(string.hexdigits) for i in range(16))
     if '@gmail' in email:
         return (True, token)
     return (False, None)
 
 
 def signUpWithGmail(email):
-    id, token = ""
-    return (True, id, token)
+    token = ''.join(random.choice(string.hexdigits) for i in range(16))
+    ID  = token
+    return (True, ID, token)
 
 
 class User:
-    def __init__(self, idUser, gmail, nama, umur, gender, alamat, noTelp, role):
-        self.idUser = idUser
-        self.gmail = gmail
-        self.nama = nama
-        self.umur = umur
-        self.gender = gender
-        self.alamat = alamat
-        self.noTelp = noTelp
-        self.role = role
+    list_user = {}
+    def __init__(self, gmail):
+        self.idUser = ''
+        self._gmail = gmail
+        self._nama = ''
+        self._umur = ''
+        self._gender = ''
+        self._alamat = ''
+        self._noTelp = ''
+        self._role = 'user'
+        self._token = ''
         self.isLogin = False
-        self.token = ""
 
     def login(self, gmail):
         login, token = logInWithGmail(gmail)
@@ -36,17 +40,20 @@ class User:
             return False
 
     def signup(self, gmail, nama, umur, gender, alamat, noTelp, role):
-        login, id, token = signUpWithGmail(gmail)
+        login, ID, token = signUpWithGmail(gmail)
         if login:
             self.isLogin = True
-            self.idUser = id
-            self.nama = nama
-            self.umur = umur
-            self.gender = gender
-            self.alamat = alamat
-            self.noTelp = noTelp
-            self.role = role
-            self.token = token
+            self.idUser = ID
+            self._nama = nama
+            self._umur = umur
+            self._gender = gender
+            self._alamat = alamat
+            self._noTelp = noTelp
+            self._role = role
+            self._token = token
+            User.list_user[ID] = {'nama': nama, 'gmai': gmail, 'umur': umur,
+                             'gender': gender, 'alamat': alamat,
+                             'noTelp': noTelp, 'role': 'user'}
             return token
         else:
             return False
@@ -57,28 +64,30 @@ class User:
         return True
 
     def updateIdentity(self, nama, umur, gender, alamat, noTelp):
-        self.nama = nama
-        self.umur = umur
-        self.gender = gender
-        self.alamat = alamat
-        self.noTelp = noTelp
+        self._nama = nama
+        self._umur = umur
+        self._gender = gender
+        self._alamat = alamat
+        self._noTelp = noTelp
 
     def getIdentity(self):
-        return self
+        return User.list_user[self.token]
 
     def setRole(self, role):
         self.role = role
 
 
 class Pasien(User):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,gmail):
+        super().__init__(self)
+        self._gmail = gmail
         self.role = "pasien"
 
 
 class Dokter(User):
-    def __init__(self, noSTR, spesialis, statusVerifikasi):
+    def __init__(self, gmail, noSTR, spesialis, statusVerifikasi):
         super().__init__()
+        self._gmail = gmail
         self.role = "dokter"
         self.noSTR = noSTR
         self.spesialis = spesialis
@@ -104,18 +113,16 @@ class Admin:
         self.token = ""
 
 # Class Periksa, class aktivitas utama dalam alur Go-Doc
-
-
 class Periksa:
     def __init__(self, idPeriksa, idPasien, idDokter, waktuPeriksa):
         self.idPeriksa = idPeriksa
-        self.idPasien = idPasien
-        self.idDokter = idDokter
-        self.waktuPeriksa = waktuPeriksa
-        self.diterima = bool
-        self.idRekamMedis = ""
-        self.idReminderObat = []
-        self.namaPenyakit = ""
+        self._idPasien = idPasien
+        self._idDokter = idDokter
+        self._waktuPeriksa = waktuPeriksa
+        self._diterima = False
+        self._idRekamMedis = ""
+        self._idReminderObat = []
+        self._namaPenyakit = ""
 
     def setPeriksa(self, idPeriksa, idPasien, idDokter, waktuPeriksa):
         self.idPeriksa = idPeriksa
@@ -179,3 +186,17 @@ class ReminderObat:
     def muteReminderObat(self, muted):
         self.muted = muted
         return muted
+
+def App():
+    print("""
+~~~=====Selamat Datang di Go-Doc=====~~~
+1. Login
+2. Sign Up
+3. Keluar
+    """)
+    choice = input()
+    while choice != '3':
+        if choice == '1':
+            gmail = input("Masukkan email: ")
+            user = User(gmail)
+            user.login(gmail)
